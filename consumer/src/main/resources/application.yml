@@ -1,0 +1,8 @@
+server:
+  port: 8888
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+    bootstrap-servers: localhost:9092
+    group-id: customers

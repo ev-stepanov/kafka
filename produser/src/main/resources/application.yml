@@ -1,0 +1,8 @@
+server:
+  port: 9999
+spring:
+  kafka:
+    topic-name: topic
+    consumer:
+      auto-offset-reset: earliest
+    bootstrap-servers: localhost:9092
