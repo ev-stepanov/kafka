@@ -3,13 +3,14 @@ package ru.neoflex.kafka.consumer.service;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import ru.neoflex.kafka.consumer.dto.Employee;
 
 @Service
 @Log4j2
-public class TestService {
+public class Receiver {
 
     @KafkaListener(topics = "topic")
-    public void listen(String message) {
-        log.info("Received message in group foo: " + message);
+    public void listen(Employee employee) {
+        log.info("Received message: " + employee);
     }
 }
