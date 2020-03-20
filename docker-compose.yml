@@ -1,4 +1,5 @@
 version: '2'
+
 services:
   zookeeper:
     image: wurstmeister/zookeeper
@@ -26,6 +27,14 @@ services:
       - CASSANDRA_SEEDS=cassandra
       - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_PASSWORD=cassandra
+  studio:
+    image: "datastax/dse-studio"
+    environment:
+      - DS_LICENSE=accept
+    ports:
+      - 9091:9091
+    links:
+      - cassandra:cassandra
 volumes:
   cassandra_data:
     driver: local
