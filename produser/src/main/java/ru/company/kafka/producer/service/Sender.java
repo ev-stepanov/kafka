@@ -1,4 +1,4 @@
-package ru.neoflex.kafka.produser.service;
+package ru.company.kafka.producer.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import ru.neoflex.kafka.produser.dto.Employee;
+import ru.company.kafka.producer.dto.Account;
 
 @Service
 @Log4j2
@@ -17,19 +17,19 @@ public class Sender {
     private String topicName;
 
     @Autowired
-    private KafkaTemplate<String, Employee> kafkaTemplate;
+    private KafkaTemplate<String, Account> kafkaTemplate;
 
-    public void sendMessage(Employee employee) {
+    public void sendMessage(Account account) {
 
-        ListenableFuture<SendResult<String, Employee>> future = kafkaTemplate.send(topicName, employee);
-        future.addCallback(new ListenableFutureCallback<SendResult<String, Employee>>() {
+        ListenableFuture<SendResult<String, Account>> future = kafkaTemplate.send(topicName, account);
+        future.addCallback(new ListenableFutureCallback<SendResult<String, Account>>() {
             @Override
-            public void onSuccess(SendResult<String, Employee> result) {
-                log.info("Sent message=[" + employee + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            public void onSuccess(SendResult<String, Account> result) {
+                log.info("Sent message=[" + account + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
             @Override
             public void onFailure(Throwable ex) {
-                log.error("Unable to send message=[" + employee + "] due to : " + ex.getMessage());
+                log.error("Unable to send message=[" + account + "] due to : " + ex.getMessage());
             }
         });
     }

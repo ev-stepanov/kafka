@@ -1,26 +1,25 @@
-package ru.neoflex.kafka.produser.controller;
+package ru.company.kafka.producer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.neoflex.kafka.produser.dto.Employee;
-import ru.neoflex.kafka.produser.service.Sender;
-
+import ru.company.kafka.producer.dto.Account;
+import ru.company.kafka.producer.service.Sender;
 
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class AccountController {
     private Sender sender;
 
     @Autowired
-    public TestController(Sender sender) {
+    public AccountController(Sender sender) {
         this.sender = sender;
     }
 
-    @PostMapping("/employee")
-    public void save(@RequestBody Employee employee) {
-        sender.sendMessage(employee);
+    @PostMapping("/account")
+    public void save(@RequestBody Account account) {
+        sender.sendMessage(account);
     }
 }

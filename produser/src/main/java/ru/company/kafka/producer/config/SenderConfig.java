@@ -1,4 +1,4 @@
-package ru.neoflex.kafka.produser.config;
+package ru.company.kafka.producer.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,7 +9,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.neoflex.kafka.produser.dto.Employee;
+import ru.company.kafka.producer.dto.Account;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +31,12 @@ public class SenderConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Employee> producerFactory() {
+    public ProducerFactory<String, Account> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Employee> kafkaTemplate() {
+    public KafkaTemplate<String, Account> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
