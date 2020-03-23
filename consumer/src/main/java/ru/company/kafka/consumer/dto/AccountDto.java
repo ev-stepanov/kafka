@@ -1,4 +1,4 @@
-package ru.neoflex.kafka.consumer.dto;
+package ru.company.kafka.consumer.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,12 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Employee implements Serializable {
+public class AccountDto implements Serializable {
     private String firstName;
     private String lastName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
-    private List<Employee> subordinates;
+    private Long balance;
 }
 

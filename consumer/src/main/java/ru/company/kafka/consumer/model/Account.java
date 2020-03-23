@@ -1,21 +1,19 @@
-package ru.company.kafka.usercassandra.model;
+package ru.company.kafka.consumer.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Table(value = "account")
+@Table
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class BankAccount {
+public class Account {
     @PrimaryKey
     private UUID uuid;
     private String firstName;

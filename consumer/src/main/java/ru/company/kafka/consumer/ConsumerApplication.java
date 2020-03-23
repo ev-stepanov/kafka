@@ -1,4 +1,4 @@
-package ru.neoflex.kafka.consumer;
+package ru.company.kafka.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

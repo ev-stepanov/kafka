@@ -1,4 +1,4 @@
-package ru.neoflex.kafka.consumer.config;
+package ru.company.kafka.consumer.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -12,7 +12,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.neoflex.kafka.consumer.dto.Employee;
+import ru.company.kafka.consumer.dto.AccountDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ public class ReceiverConfig {
     private String groupId;
 
     @Bean
-    public ConsumerFactory<String, Employee> consumerFactory() {
-        JsonDeserializer<Employee> deserializer = new JsonDeserializer<>(Employee.class);
+    public ConsumerFactory<String, AccountDto> consumerFactory() {
+        JsonDeserializer<AccountDto> deserializer = new JsonDeserializer<>(AccountDto.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);
@@ -48,8 +48,8 @@ public class ReceiverConfig {
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Employee>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Employee> factory =
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, AccountDto>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, AccountDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
 
