@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     private static final int RANDOM_NAME_LENGTH = 10;
-    public static final int MIN_NAME_LENGTH = 3;
+    private static final int MIN_NAME_LENGTH = 3;
 
     public Account generateAccount() {
         Random random = new Random();
@@ -26,6 +26,7 @@ public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     private LocalDate generateRandomDate() {
         return LocalDate.now().minusDays(randBetween());
     }
+
     private long randBetween() {
         return (long) 7000 + Math.round(Math.random() * ((long) 30000 - (long) 7000));
     }

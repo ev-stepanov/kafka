@@ -61,4 +61,9 @@ public class AccountServiceImpl implements AccountService {
 
         return accounts;
     }
+
+    @Override
+    public List<Account> getBankAccounts() {
+        return getBankAccounts(countGenerateAccounts);
+    }
 }

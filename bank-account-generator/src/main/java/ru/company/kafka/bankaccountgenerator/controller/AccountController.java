@@ -9,7 +9,7 @@ import ru.company.kafka.bankaccountgenerator.service.AccountService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/generation")
+@RequestMapping("/api")
 public class AccountController {
     private AccountService accountService;
 
@@ -18,9 +18,14 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/accounts/{count}")
+    @GetMapping("/generate/accounts/{count}")
     public ResponseEntity<List<Account>> getAccounts(@PathVariable Long count) {
         return ResponseEntity.ok(accountService.getBankAccounts(count));
+    }
+
+    @GetMapping("/generate/accounts")
+    public ResponseEntity<List<Account>> getAccounts() {
+        return ResponseEntity.ok(accountService.getBankAccounts());
     }
 
     @PostMapping("/account")
