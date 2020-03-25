@@ -6,9 +6,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.company.kafka.producer.dto.Account;
+import ru.company.kafka.producer.dto.RestAccount;
+import ru.company.kafka.producer.enums.TypeBankAccount;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Service
 public class RestAccountService {
@@ -23,11 +27,24 @@ public class RestAccountService {
 
     @Scheduled(cron = "* * * * * *")
     public void fetchAccounts() {
-        ResponseEntity<Account[]> response =
+        ResponseEntity<RestAccount[]> response =
                 restTemplate.getForEntity(
-                        "http://localhost:8080/api/generate/accounts",
-                        Account[].class);
+                        "http://localhost:8085/api/generate/accounts",
+                        RestAccount[].class);
 
-        Arrays.asList(Objects.requireNonNull(response.getBody())).parallelStream().forEach(a -> sender.sendMessage(a));
+        List<RestAccount> accounts = Arrays.asList(Objects.requireNonNull(response.getBody()));
+        accounts.stream().map(this::mapRestAccountToAccount).parallel().forEach(a -> sender.sendMessage(a));
+    }
+
+    private Account mapRestAccountToAccount(RestAccount restAccount) {
+
+        return Account.builder()
+                .uuid(restAccount.getUuid())
+                .firstName(restAccount.getFirstName())
+                .lastName(restAccount.getLastName())
+                .birthday(restAccount.getBirthday())
+                .balance(restAccount.getBalance())
+                .typeBankAccount(new Random().nextInt(2) == 1 ? TypeBankAccount.CREDIT : TypeBankAccount.DEBIT)
+                .build();
     }
 }
