@@ -21,7 +21,7 @@ public class Sender {
 
     public void sendMessage(Account account) {
 
-        ListenableFuture<SendResult<String, Account>> future = kafkaTemplate.send(topicName, account);
+        ListenableFuture<SendResult<String, Account>> future = kafkaTemplate.send(topicName,account.getUuid().toString(), account);
         future.addCallback(new ListenableFutureCallback<SendResult<String, Account>>() {
             @Override
             public void onSuccess(SendResult<String, Account> result) {

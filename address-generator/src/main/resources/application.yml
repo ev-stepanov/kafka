@@ -1,7 +1,7 @@
 spring:
   kafka:
     client-id: square-finder
-    bootstrap-servers: 192.168.99.100:9092
+    bootstrap-servers: localhost:9092
     template:
       default-topic: input-topic
     producer:
@@ -21,4 +21,4 @@ spring:
 kafka:
   topic:
     input: input-topic
-    even-output: square-output
+    output: output-topic

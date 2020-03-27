@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Boolean generateBankAccounts() {
-        try(FileOutputStream f = new FileOutputStream(new File(path + "accounts.txt"));
+        try(FileOutputStream f = new FileOutputStream(new File(path + "accounts.bin"));
             ObjectOutputStream o = new ObjectOutputStream(f)) {
             for (int i = 0; i < countGenerateAccounts; i++) {
                 o.writeObject(accountsGeneratorService.generateAccount());
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getBankAccounts(Long count) {
-        File accountsFile = new File(path + "accounts.txt");
+        File accountsFile = new File(path + "accounts.bin");
         if(!accountsFile.exists()) {
             generateBankAccounts();
         }
