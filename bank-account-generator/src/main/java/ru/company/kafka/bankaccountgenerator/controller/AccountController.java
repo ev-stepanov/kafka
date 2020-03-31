@@ -20,7 +20,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/accounts")
+    @GetMapping("/account")
     public ResponseEntity<List<GeneratedAccount>> getAccounts() {
         return ResponseEntity.ok(accountService.getBankAccounts());
     }
