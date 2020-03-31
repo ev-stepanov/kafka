@@ -40,8 +40,8 @@ public class RestAccountService {
             return;
         }
         List<GeneratedAccount> accounts = Arrays.asList(Objects.requireNonNull(response.getBody()));
+        log.info("The data has been downloaded from the source: " + API_ACCOUNTS);
 
-        log.info("The following data has been downloaded from the source + " + API_ACCOUNTS + accounts);
         accounts.stream()
                 .parallel()
                 .filter(account -> account.getBirthday().isBefore(LocalDate.now().minusYears(18))) // Client have to be 18+ old
