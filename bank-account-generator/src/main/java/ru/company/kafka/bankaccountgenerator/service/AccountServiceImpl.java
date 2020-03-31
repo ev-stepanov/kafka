@@ -1,29 +1,21 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.company.kafka.bankaccountgenerator.model.Account;
+import ru.company.kafka.model.rest.GeneratedAccount;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
-@Log4j2
 public class AccountServiceImpl implements AccountService {
     private AccountsGeneratorService accountsGeneratorService;
 
-    @Value("${account.count.default}")
+    @Value("${default.generate-accounts.count}")
     private Long countGenerateAccounts;
-
-    @Value(("${path.generated.accounts}"))
-    private String path;
 
     @Autowired
     public AccountServiceImpl(AccountsGeneratorService accountsGeneratorService) {
@@ -31,31 +23,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Boolean generateBankAccounts() {
-        try(FileOutputStream f = new FileOutputStream(new File(path));
-            ObjectOutputStream o = new ObjectOutputStream(f)) {
-            for (int i = 0; i < countGenerateAccounts; i++) {
-                o.writeObject(accountsGeneratorService.generateAccount());
-            }
-        } catch (IOException e) {
-            log.error("Error writing to file", e);
-        }
-
-        return true;
-    }
-
-    @Override
-    public List<Account> getBankAccounts(Long count) {
-        List<Account> accounts = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            accounts.add(accountsGeneratorService.generateAccount());
-        }
-
-        return accounts;
-    }
-
-    @Override
-    public List<Account> getBankAccounts() {
-        return getBankAccounts(countGenerateAccounts);
+    public List<GeneratedAccount> getBankAccounts() {
+        return Stream.generate(accountsGeneratorService::generateAccount)
+                .limit(countGenerateAccounts)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

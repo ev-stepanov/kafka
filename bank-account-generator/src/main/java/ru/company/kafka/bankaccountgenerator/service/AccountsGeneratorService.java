@@ -1,7 +1,7 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
-import ru.company.kafka.bankaccountgenerator.model.Account;
+import ru.company.kafka.model.rest.GeneratedAccount;
 
 public interface AccountsGeneratorService {
-    Account generateAccount();
+    GeneratedAccount generateAccount();
 }
