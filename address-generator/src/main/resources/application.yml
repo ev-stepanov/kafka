@@ -1,15 +1,15 @@
 spring:
   kafka:
-    client-id: square-finder2
+    client-id: address-generator
     bootstrap-servers: 192.168.99.100:9092
     template:
-      default-topic: input-topic
+      default-topic: bank-accounts-topic
     consumer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
-    group-id: random-consumer2
+    group-id: address-generator-consumer
 kafka:
   topic:
-    input: input-topic
-    output: output-topic
+    input: bank-accounts-topic
+    output: address-generator-topic

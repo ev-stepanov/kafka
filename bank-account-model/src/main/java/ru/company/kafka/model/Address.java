@@ -14,4 +14,6 @@ import java.util.UUID;
 public class Address {
     private UUID uuid;
     private String city;
+    private String street;
+    private String numberOfHome;
 }

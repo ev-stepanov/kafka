@@ -10,54 +10,48 @@
 	</parent>
 	<groupId>ru.company.kafka</groupId>
 	<artifactId>address-generator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>address-generator</name>
-	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<spring.version>2.2.5.RELEASE</spring.version>
+		<spring-kafka.version>2.4.3.RELEASE</spring-kafka.version>
+		<lombok.version>1.18.10</lombok.version>
+		<account-model.version>0.0.1</account-model.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>ru.company.kafka</groupId>
 			<artifactId>bank-account-model</artifactId>
-			<version>0.0.1</version>
+			<version>${account-model.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-streams</artifactId>
+			<version>${kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+			<version>${spring-kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+			<version>${lombok.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.rocksdb/rocksdbjni -->
-		<dependency>
-			<groupId>org.rocksdb</groupId>
-			<artifactId>rocksdbjni</artifactId>
-			<version>4.9.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-			<version>2.10.2</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -69,6 +63,7 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka-test</artifactId>
+			<version>${spring-kafka.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -81,5 +76,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

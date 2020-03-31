@@ -1,8 +1,7 @@
 package ru.company.kafka.addressgenerator.config;
 
-import org.apache.kafka.common.serialization.Deserializer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
@@ -13,23 +12,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerde;
-//import ru.company.kafka.addressgenerator.dto.AddressDto;
-import ru.company.kafka.addressgenerator.util.JsonPOJODeserializer;
-import ru.company.kafka.addressgenerator.util.JsonPOJOSerializer;
-import ru.company.kafka.model.Account;
 import ru.company.kafka.model.Address;
+import ru.company.kafka.model.producer.BankAccount;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 @EnableKafkaStreams
+@Slf4j
 public class KafkaStreamConfig {
 
     @Value("${kafka.topic.input}")
@@ -50,14 +46,19 @@ public class KafkaStreamConfig {
 
     @Bean
     public Topology createTopology(StreamsBuilder streamsBuilder) {
-        KStream<String, Account> accountStream =
-                streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), new JsonSerde<>(Account.class).ignoreTypeHeaders()));
+        KStream<String, BankAccount> accountStream =
+                streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccount.class).ignoreTypeHeaders()));
 
         accountStream
-//                .filter((id, account) -> account.getLastName().startsWith("A"))
+                .filter((id, account) -> account.getLastName().startsWith("A"))
                 .mapValues((id, account) -> {
-                    System.out.println(account);
-                    return new Address(account.getUuid(), account.getFirstName());
+                    log.info("For " + id + "was generated new address");
+                    return Address.builder()
+                            .uuid(account.getUuid())
+                            .city("Saratov")
+                            .street("Kirova")
+                            .numberOfHome("55A")
+                    .build();
                 })
                 .to(outputTopic, Produced.with(Serdes.String(), new JsonSerde<>(Address.class).ignoreTypeHeaders()));
 
