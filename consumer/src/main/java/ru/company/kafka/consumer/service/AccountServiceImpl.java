@@ -10,12 +10,12 @@ import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-    private AccountRepository accountRepository;
+//    private AccountRepository accountRepository;
 
-    @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+//    @Autowired
+//    public AccountServiceImpl(AccountRepository accountRepository) {
+//        this.accountRepository = accountRepository;
+//    }
 
     @Override
     public Account save(AccountDto accountDto) {
@@ -26,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
                 .firstName(accountDto.getFirstName())
                 .lastName(accountDto.getLastName())
                 .build();
-        return accountRepository.save(account);
+//        return accountRepository.save(account);
+        return null;
     }
 }

@@ -9,12 +9,12 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Table
+//@Table
 @Data
 @Builder
 @AllArgsConstructor
 public class Account {
-    @PrimaryKey
+//    @PrimaryKey
     private UUID uuid;
     private String firstName;
     private String lastName;

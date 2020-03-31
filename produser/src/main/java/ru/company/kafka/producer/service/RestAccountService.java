@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.company.kafka.producer.dto.Account;
+import ru.company.kafka.model.Account;
+import ru.company.kafka.model.TypeBankAccount;
 import ru.company.kafka.producer.dto.RestAccount;
-import ru.company.kafka.producer.enums.TypeBankAccount;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,7 @@ public class RestAccountService {
         this.sender = sender;
     }
 
-    @Scheduled(cron = "* * * * * *")
+    @Scheduled(cron = "0/5 * * * * *")
     public void fetchAccounts() {
         ResponseEntity<RestAccount[]> response =
                 restTemplate.getForEntity(

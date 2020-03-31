@@ -2,11 +2,20 @@ server:
   port: 8888
 spring:
   kafka:
+    client-id: square-finder
+    bootstrap-servers: 192.168.99.100:9092
+    template:
+      default-topic: input-topic
     consumer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
-    bootstrap-servers: localhost:9092
-    group-id: customers
+    group-id: random-consumer
+kafka:
+  topic:
+    input: input-topic
+    output: output-topic
   data:
     cassandra:
-      contact-points: localhost
+      contact-points: 192.168.99.100
       keyspace-name: company

@@ -1,6 +1,6 @@
 spring:
   kafka:
-    client-id: square-finder2
+    client-id: square-finder
     bootstrap-servers: 192.168.99.100:9092
     template:
       default-topic: input-topic
@@ -8,7 +8,14 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
-    group-id: random-consumer2
+    group-id: random-consumer
+#  data:
+#    cassandra:
+#      contact-points: 192.168.99.100
+#      port: 9042
+#      keyspace-name: bankAccount
+#      basePackages: ru.company.kafka.kafkaconsumer.model
+#      schema-action: create_if_not_exists
 kafka:
   topic:
     input: input-topic

@@ -17,8 +17,8 @@ import ru.company.kafka.consumer.dto.AccountDto;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
-@EnableKafka
+//@Configuration
+//@EnableKafka
 public class ReceiverConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")

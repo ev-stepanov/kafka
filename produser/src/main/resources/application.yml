@@ -5,4 +5,4 @@ spring:
     topic-name: input-topic
     consumer:
       auto-offset-reset: earliest
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.99.100:9092

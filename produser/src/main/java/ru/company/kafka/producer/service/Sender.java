@@ -8,7 +8,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import ru.company.kafka.producer.dto.Account;
+import ru.company.kafka.model.Account;
 
 @Service
 @Log4j2
@@ -16,8 +16,12 @@ public class Sender {
     @Value("${spring.kafka.topic-name}")
     private String topicName;
 
-    @Autowired
     private KafkaTemplate<String, Account> kafkaTemplate;
+
+    @Autowired
+    public Sender(KafkaTemplate<String, Account> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public void sendMessage(Account account) {
 

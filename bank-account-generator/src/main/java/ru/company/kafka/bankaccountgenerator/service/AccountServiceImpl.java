@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import ru.company.kafka.bankaccountgenerator.model.Account;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Boolean generateBankAccounts() {
-        try(FileOutputStream f = new FileOutputStream(new File(path + "accounts.bin"));
+        try(FileOutputStream f = new FileOutputStream(new File(path));
             ObjectOutputStream o = new ObjectOutputStream(f)) {
             for (int i = 0; i < countGenerateAccounts; i++) {
                 o.writeObject(accountsGeneratorService.generateAccount());
@@ -44,19 +46,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getBankAccounts(Long count) {
-        File accountsFile = new File(path + "accounts.bin");
-        if(!accountsFile.exists()) {
-            generateBankAccounts();
-        }
-
         List<Account> accounts = new ArrayList<>();
-
-        try(ObjectInputStream oi = new ObjectInputStream(new FileInputStream(accountsFile))) {
-            for (int i = 0; i < count; i++) {
-                accounts.add((Account) oi.readObject());
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            log.error("Error writing to accountsFile", e);
+        for (int i = 0; i < count; i++) {
+            accounts.add(accountsGeneratorService.generateAccount());
         }
 
         return accounts;

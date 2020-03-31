@@ -9,7 +9,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.company.kafka.producer.dto.Account;
+import ru.company.kafka.model.Account;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -16,7 +16,7 @@ public class Receiver {
         this.accountService = accountService;
     }
 
-    @KafkaListener(topics = "topic")
+//    @KafkaListener(topics = "output-topic")
     public void listen(AccountDto accountDto) {
         log.info("Received message: " + accountDto);
         accountService.save(accountDto);
