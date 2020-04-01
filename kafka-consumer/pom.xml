@@ -10,9 +10,8 @@
 	</parent>
 	<groupId>ru.company.kafka</groupId>
 	<artifactId>kafka-consumer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>kafka-consumer</name>
-	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -77,6 +76,12 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ru.company.kafka</groupId>
+			<artifactId>bank-account-model</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

@@ -1,4 +1,4 @@
-package ru.company.kafka.model;
+package ru.company.kafka.model.producer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class AddressDto {
     private UUID uuid;
     private String city;
     private String street;

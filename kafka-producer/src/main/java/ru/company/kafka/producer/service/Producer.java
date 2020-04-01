@@ -8,7 +8,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import ru.company.kafka.model.producer.BankAccount;
+import ru.company.kafka.model.producer.BankAccountDto;
 
 @Service
 @Slf4j
@@ -16,29 +16,29 @@ public class Producer {
     @Value("${spring.kafka.topic-name}")
     private String topicName;
 
-    private KafkaTemplate<String, BankAccount> kafkaTemplate;
+    private KafkaTemplate<String, BankAccountDto> kafkaTemplate;
 
     @Autowired
-    public Producer(KafkaTemplate<String, BankAccount> kafkaTemplate) {
+    public Producer(KafkaTemplate<String, BankAccountDto> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(BankAccount bankAccount) {
-        ListenableFuture<SendResult<String, BankAccount>> future =
-                kafkaTemplate.send(topicName, bankAccount.getUuid().toString(), bankAccount);
+    public void sendMessage(BankAccountDto bankAccountDto) {
+        ListenableFuture<SendResult<String, BankAccountDto>> future =
+                kafkaTemplate.send(topicName, bankAccountDto.getUuid().toString(), bankAccountDto);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, BankAccount>>() {
+        future.addCallback(new ListenableFutureCallback<SendResult<String, BankAccountDto>>() {
             @Override
-            public void onSuccess(SendResult<String, BankAccount> result) {
+            public void onSuccess(SendResult<String, BankAccountDto> result) {
                 log.info("Topic: " + result.getRecordMetadata().topic() +
                         "   Offset: " + result.getRecordMetadata().offset() +
                         "   Partition: " + result.getRecordMetadata().partition() +
-                        "   Sent message=[" + bankAccount + "]");
+                        "   Sent message=[" + bankAccountDto + "]");
             }
 
             @Override
             public void onFailure(@SuppressWarnings("NullableProblems") Throwable ex) {
-                log.error("Unable to send message=[" + bankAccount + "] due to : " + ex.getMessage());
+                log.error("Unable to send message=[" + bankAccountDto + "] due to : " + ex.getMessage());
             }
         });
     }

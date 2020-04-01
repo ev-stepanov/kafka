@@ -10,7 +10,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.company.kafka.model.producer.BankAccount;
+import ru.company.kafka.model.producer.BankAccountDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +33,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, BankAccount> producerFactory() {
+    public ProducerFactory<String, BankAccountDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, BankAccount> kafkaTemplate() {
+    public KafkaTemplate<String, BankAccountDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

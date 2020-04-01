@@ -12,13 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.support.serializer.JsonSerde;
-import ru.company.kafka.model.Address;
-import ru.company.kafka.model.producer.BankAccount;
+import ru.company.kafka.model.producer.AddressDto;
+import ru.company.kafka.model.producer.BankAccountDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,21 +45,21 @@ public class KafkaStreamConfig {
 
     @Bean
     public Topology createTopology(StreamsBuilder streamsBuilder) {
-        KStream<String, BankAccount> accountStream =
-                streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccount.class).ignoreTypeHeaders()));
+        KStream<String, BankAccountDto> accountStream =
+                streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccountDto.class).ignoreTypeHeaders()));
 
         accountStream
                 .filter((id, account) -> account.getLastName().startsWith("A"))
                 .mapValues((id, account) -> {
                     log.info("For " + id + "was generated new address");
-                    return Address.builder()
+                    return AddressDto.builder()
                             .uuid(account.getUuid())
                             .city("Saratov")
                             .street("Kirova")
                             .numberOfHome("55A")
                     .build();
                 })
-                .to(outputTopic, Produced.with(Serdes.String(), new JsonSerde<>(Address.class).ignoreTypeHeaders()));
+                .to(outputTopic, Produced.with(Serdes.String(), new JsonSerde<>(AddressDto.class).ignoreTypeHeaders()));
 
         return streamsBuilder.build();
     }

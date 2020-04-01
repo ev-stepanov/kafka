@@ -12,7 +12,6 @@
     <modules>
         <module>address-generator</module>
         <module>bank-account-generator</module>
-        <module>consumer</module>
         <module>kafka-producer</module>
         <module>kafka-consumer</module>
         <module>bank-account-model</module>

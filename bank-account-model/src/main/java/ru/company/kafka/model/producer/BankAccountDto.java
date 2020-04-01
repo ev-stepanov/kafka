@@ -1,27 +1,28 @@
-package ru.company.kafka.consumer.dto;
+package ru.company.kafka.model.producer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.company.kafka.model.enums.TypeAccount;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.UUID;
 
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccountDto implements Serializable {
+@NoArgsConstructor
+public class BankAccountDto {
+    private UUID uuid;
     private String firstName;
     private String lastName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
     private Long balance;
+    private TypeAccount typeAccount;
 }
-

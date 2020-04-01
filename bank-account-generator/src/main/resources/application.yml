@@ -2,7 +2,7 @@ server:
   port: 8085
 default:
   generate-accounts:
-    count: 5
+    count: 50
   generate-names:
     min-length: 3
     max-length: 10

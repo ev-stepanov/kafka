@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.*;
-import ru.company.kafka.model.producer.BankAccount;
-import ru.company.kafka.model.producer.TypeAccount;
+import ru.company.kafka.model.producer.BankAccountDto;
+import ru.company.kafka.model.enums.TypeAccount;
 import ru.company.kafka.model.rest.GeneratedAccount;
 
 import java.time.LocalDate;
@@ -49,8 +49,8 @@ public class RestAccountService {
                 .forEach(a -> producer.sendMessage(a));
     }
 
-    private BankAccount mapGeneratedAccountToAccount(GeneratedAccount account) {
-        return BankAccount.builder()
+    private BankAccountDto mapGeneratedAccountToAccount(GeneratedAccount account) {
+        return BankAccountDto.builder()
                 .uuid(account.getUuid())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())

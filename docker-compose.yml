@@ -12,7 +12,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "bank-accounts-topic:2:1, address-generator-topic:1:1"
+      KAFKA_CREATE_TOPICS: "bank-accounts-topic:1:1, address-generator-topic:1:1"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
