@@ -3,6 +3,3 @@ server:
 default:
   generate-accounts:
     count: 50
-  generate-names:
-    min-length: 3
-    max-length: 10

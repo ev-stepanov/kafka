@@ -1,18 +1,16 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
-import org.apache.commons.lang.RandomStringUtils;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.company.kafka.model.rest.GeneratedAccount;
 
-import java.time.LocalDate;
-import java.util.Random;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Service
 public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
-    private static final int MAX_BALANCE = 10_000_000;
-    private Random random = new Random();
+    private final Faker faker;
 
     @Value("${default.generate-names.max-length}")
     private int maxNameLength;
@@ -20,21 +18,17 @@ public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     @Value("${default.generate-names.min-length}")
     private int minNameLength;
 
+    public AccountsGeneratorServiceImpl(Faker faker) {
+        this.faker = faker;
+    }
+
     public GeneratedAccount generateAccount() {
         return GeneratedAccount.builder()
                 .uuid(UUID.randomUUID())
-                .firstName(RandomStringUtils.randomAlphabetic(minNameLength + random.nextInt(maxNameLength)))
-                .lastName(RandomStringUtils.randomAlphabetic(minNameLength + random.nextInt(maxNameLength)))
-                .balance((long)random.nextInt(MAX_BALANCE))
-                .birthday(generateRandomDate())
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
+                .balance(Double.parseDouble(faker.commerce().price().replace(",",".")))
+                .birthday(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .build();
-    }
-
-    private LocalDate generateRandomDate() {
-        return LocalDate.now().minusDays(randBetween());
-    }
-
-    private long randBetween() {
-        return (long) 2_000 + Math.round(random.nextDouble() * ((long) 30_000 - (long) 2_000));
     }
 }

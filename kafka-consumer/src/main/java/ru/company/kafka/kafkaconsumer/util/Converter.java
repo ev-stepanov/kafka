@@ -19,7 +19,7 @@ public class Converter {
                 .typeAccount(bankAccountDto.getTypeAccount())
                 .city(addressDto.getCity())
                 .street(addressDto.getStreet())
-                .numberOfHome(addressDto.getNumberOfHome())
+                .state(addressDto.getState())
                 .build();
     }
 

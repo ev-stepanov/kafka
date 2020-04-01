@@ -1,5 +1,6 @@
 package ru.company.kafka.bankaccountgenerator.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class AccountController {
     private final AccountService accountService;
 
@@ -20,6 +22,8 @@ public class AccountController {
 
     @GetMapping("/account")
     public ResponseEntity<List<GeneratedAccount>> getAccounts() {
-        return ResponseEntity.ok(accountService.getBankAccounts());
+        List<GeneratedAccount> bankAccounts = accountService.getBankAccounts();
+        log.info("Were generated accounts: " + bankAccounts);
+        return ResponseEntity.ok(bankAccounts);
     }
 }

@@ -23,6 +23,6 @@ public class BankAccountDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
-    private Long balance;
+    private Double balance;
     private TypeAccount typeAccount;
 }

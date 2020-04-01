@@ -16,6 +16,7 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.support.serializer.JsonSerde;
+import ru.company.kafka.addressgenerator.service.AddressGeneratorService;
 import ru.company.kafka.model.producer.AddressDto;
 import ru.company.kafka.model.producer.BankAccountDto;
 
@@ -26,12 +27,17 @@ import java.util.Map;
 @EnableKafkaStreams
 @Slf4j
 public class KafkaStreamConfig {
+    private final AddressGeneratorService addressGeneratorService;
 
     @Value("${kafka.topic.input}")
     private String inputTopic;
 
     @Value("${kafka.topic.output}")
     private String outputTopic;
+
+    public KafkaStreamConfig(AddressGeneratorService addressGeneratorService) {
+        this.addressGeneratorService = addressGeneratorService;
+    }
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public KafkaStreamsConfiguration kStreamsConfigs(KafkaProperties kafkaProperties) {
@@ -54,12 +60,7 @@ public class KafkaStreamConfig {
                     .filter((id, account) -> account.getLastName().startsWith("A"))
                     .mapValues((id, account) -> {
                         log.info("For " + id + "was generated new address");
-                        return AddressDto.builder()
-                                .uuid(account.getUuid())
-                                .city("Saratov")
-                                .street("Kirova")
-                                .numberOfHome("55A")
-                                .build();
+                        return addressGeneratorService.generateAddress(account.getUuid());
                     })
                     .to(outputTopic, Produced.with(Serdes.String(), addressDtoJsonSerde));
         }

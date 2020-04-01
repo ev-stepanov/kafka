@@ -20,5 +20,5 @@ public class GeneratedAccount implements Serializable {
     private String firstName;
     private String lastName;
     private LocalDate birthday;
-    private Long balance;
+    private Double balance;
 }

@@ -15,5 +15,5 @@ public class AddressDto {
     private UUID uuid;
     private String city;
     private String street;
-    private String numberOfHome;
+    private String state;
 }

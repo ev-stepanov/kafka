@@ -25,7 +25,7 @@ public class BankAccountInfo {
 
     private String firstName;
     private String lastName;
-    private Long balance;
+    private Double balance;
     private TypeAccount typeAccount;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -33,5 +33,5 @@ public class BankAccountInfo {
 
     private String city;
     private String street;
-    private String numberOfHome;
+    private String state;
 }

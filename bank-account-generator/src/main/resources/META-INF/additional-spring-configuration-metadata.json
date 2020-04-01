@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "default.generate-accounts.count",
+      "type": "java.lang.String",
+      "description": "Description for default.generate-accounts.count."
+  }
+] }
