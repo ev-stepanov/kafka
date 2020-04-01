@@ -23,7 +23,7 @@ public class Producer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(BankAccountDto bankAccountDto) {
+    void sendMessage(BankAccountDto bankAccountDto) {
         ListenableFuture<SendResult<String, BankAccountDto>> future =
                 kafkaTemplate.send(topicName, bankAccountDto.getUuid().toString(), bankAccountDto);
 

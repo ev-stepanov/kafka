@@ -1,13 +1,14 @@
 package ru.company.kafka.producer.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.*;
-import ru.company.kafka.model.producer.BankAccountDto;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 import ru.company.kafka.model.enums.TypeAccount;
+import ru.company.kafka.model.producer.BankAccountDto;
 import ru.company.kafka.model.rest.GeneratedAccount;
 
 import java.time.LocalDate;
@@ -19,12 +20,11 @@ import java.util.Random;
 @Service
 @Slf4j
 public class RestAccountService {
-    public static final String API_ACCOUNTS = "http://localhost:8085/api/account";
+    private static final String API_ACCOUNTS = "http://localhost:8085/api/account";
 
-    private RestTemplate restTemplate;
-    private Producer producer;
+    private final RestTemplate restTemplate;
+    private final Producer producer;
 
-    @Autowired
     public RestAccountService(RestTemplate restTemplate, Producer producer) {
         this.restTemplate = restTemplate;
         this.producer = producer;
@@ -46,7 +46,7 @@ public class RestAccountService {
                 .parallel()
                 .filter(account -> account.getBirthday().isBefore(LocalDate.now().minusYears(18))) // Client have to be 18+ old
                 .map(this::mapGeneratedAccountToAccount)
-                .forEach(a -> producer.sendMessage(a));
+                .forEach(producer::sendMessage);
     }
 
     private BankAccountDto mapGeneratedAccountToAccount(GeneratedAccount account) {

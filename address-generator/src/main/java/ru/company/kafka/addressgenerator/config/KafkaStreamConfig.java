@@ -48,7 +48,7 @@ public class KafkaStreamConfig {
         try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
              JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
             KStream<String, BankAccountDto> accountStream =
-                    streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde.ignoreTypeHeaders()));
+                    streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
 
             accountStream
                     .filter((id, account) -> account.getLastName().startsWith("A"))
@@ -61,7 +61,7 @@ public class KafkaStreamConfig {
                                 .numberOfHome("55A")
                                 .build();
                     })
-                    .to(outputTopic, Produced.with(Serdes.String(), addressDtoJsonSerde.ignoreTypeHeaders()));
+                    .to(outputTopic, Produced.with(Serdes.String(), addressDtoJsonSerde));
         }
 
         return streamsBuilder.build();

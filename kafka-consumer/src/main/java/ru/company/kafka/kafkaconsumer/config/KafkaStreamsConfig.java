@@ -7,7 +7,6 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KTable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +35,8 @@ public class KafkaStreamsConfig {
     @Value("${kafka.topic.address-generator}")
     private String addressGeneratorTopic;
 
-    private AccountRepository repository;
+    private final AccountRepository repository;
 
-    @Autowired
     public KafkaStreamsConfig(AccountRepository repository) {
         this.repository = repository;
     }
@@ -59,10 +57,10 @@ public class KafkaStreamsConfig {
         try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
              JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
             KTable<String, BankAccountDto> accountStream =
-                    streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde.ignoreTypeHeaders()));
+                    streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
 
             KTable<String, AddressDto> addressStream =
-                    streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde.ignoreTypeHeaders()));
+                    streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde));
 
             KTable<String, BankAccountInfo> bankAccountInfoKTable = accountStream.join(addressStream,
                     (bankAccount, addressDto) -> {

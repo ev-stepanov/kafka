@@ -9,10 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.company.kafka</groupId>
-	<artifactId>user-cassandra</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>user-cassandra-request</artifactId>
+	<version>0.0.1</version>
 	<name>user-cassandra</name>
-	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>

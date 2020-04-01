@@ -35,6 +35,6 @@ public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     }
 
     private long randBetween() {
-        return (long) 7000 + Math.round(Math.random() * ((long) 30000 - (long) 7000));
+        return (long) 2_000 + Math.round(random.nextDouble() * ((long) 30_000 - (long) 2_000));
     }
 }

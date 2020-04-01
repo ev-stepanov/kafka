@@ -1,6 +1,5 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.company.kafka.model.rest.GeneratedAccount;
@@ -12,12 +11,11 @@ import java.util.stream.Stream;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-    private AccountsGeneratorService accountsGeneratorService;
+    private final AccountsGeneratorService accountsGeneratorService;
 
     @Value("${default.generate-accounts.count}")
     private Long countGenerateAccounts;
 
-    @Autowired
     public AccountServiceImpl(AccountsGeneratorService accountsGeneratorService) {
         this.accountsGeneratorService = accountsGeneratorService;
     }
