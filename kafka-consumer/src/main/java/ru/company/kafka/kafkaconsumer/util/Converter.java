@@ -5,6 +5,10 @@ import ru.company.kafka.model.producer.AddressDto;
 import ru.company.kafka.model.producer.BankAccountDto;
 
 public class Converter {
+    private Converter() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static BankAccountInfo addressAndAccountToBankAccountInfo(BankAccountDto bankAccountDto, AddressDto addressDto) {
         return BankAccountInfo.builder()
                 .uuid(addressDto.getUuid())

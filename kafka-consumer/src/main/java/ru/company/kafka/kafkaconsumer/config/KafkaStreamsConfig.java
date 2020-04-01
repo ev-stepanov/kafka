@@ -56,20 +56,22 @@ public class KafkaStreamsConfig {
 
     @Bean
     public Topology createTopology(StreamsBuilder streamsBuilder) {
-        KTable<String, BankAccountDto> accountStream =
-                streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccountDto.class).ignoreTypeHeaders()));
+        try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
+             JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
+            KTable<String, BankAccountDto> accountStream =
+                    streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde.ignoreTypeHeaders()));
 
-        KTable<String, AddressDto> addressStream =
-                streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), new JsonSerde<>(AddressDto.class).ignoreTypeHeaders()));
+            KTable<String, AddressDto> addressStream =
+                    streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde.ignoreTypeHeaders()));
 
-        KTable<String, BankAccountInfo> bankAccountInfoKTable = accountStream.join(addressStream,
-                (bankAccount, addressDto) -> {
-                    log.info("Data was joined by uuid " + bankAccount.getUuid());
-                    return Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
-                });
+            KTable<String, BankAccountInfo> bankAccountInfoKTable = accountStream.join(addressStream,
+                    (bankAccount, addressDto) -> {
+                        log.info("Data was joined by uuid " + bankAccount.getUuid());
+                        return Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
+                    });
 
-        bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
-
+            bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
+        }
         return streamsBuilder.build();
     }
 }

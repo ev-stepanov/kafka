@@ -45,21 +45,24 @@ public class KafkaStreamConfig {
 
     @Bean
     public Topology createTopology(StreamsBuilder streamsBuilder) {
-        KStream<String, BankAccountDto> accountStream =
-                streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccountDto.class).ignoreTypeHeaders()));
+        try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
+             JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
+            KStream<String, BankAccountDto> accountStream =
+                    streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde.ignoreTypeHeaders()));
 
-        accountStream
-                .filter((id, account) -> account.getLastName().startsWith("A"))
-                .mapValues((id, account) -> {
-                    log.info("For " + id + "was generated new address");
-                    return AddressDto.builder()
-                            .uuid(account.getUuid())
-                            .city("Saratov")
-                            .street("Kirova")
-                            .numberOfHome("55A")
-                    .build();
-                })
-                .to(outputTopic, Produced.with(Serdes.String(), new JsonSerde<>(AddressDto.class).ignoreTypeHeaders()));
+            accountStream
+                    .filter((id, account) -> account.getLastName().startsWith("A"))
+                    .mapValues((id, account) -> {
+                        log.info("For " + id + "was generated new address");
+                        return AddressDto.builder()
+                                .uuid(account.getUuid())
+                                .city("Saratov")
+                                .street("Kirova")
+                                .numberOfHome("55A")
+                                .build();
+                    })
+                    .to(outputTopic, Produced.with(Serdes.String(), addressDtoJsonSerde.ignoreTypeHeaders()));
+        }
 
         return streamsBuilder.build();
     }

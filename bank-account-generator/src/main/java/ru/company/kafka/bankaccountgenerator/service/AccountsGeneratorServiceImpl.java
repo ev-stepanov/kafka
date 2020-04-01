@@ -11,7 +11,9 @@ import java.util.UUID;
 
 @Service
 public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
-    public static final int MAX_BALANCE = 10_000_000;
+    private static final int MAX_BALANCE = 10_000_000;
+    private Random random = new Random();
+
     @Value("${default.generate-names.max-length}")
     private int maxNameLength;
 
@@ -19,7 +21,6 @@ public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     private int minNameLength;
 
     public GeneratedAccount generateAccount() {
-        Random random = new Random();
         return GeneratedAccount.builder()
                 .uuid(UUID.randomUUID())
                 .firstName(RandomStringUtils.randomAlphabetic(minNameLength + random.nextInt(maxNameLength)))
