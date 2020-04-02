@@ -9,29 +9,24 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.company.kafka</groupId>
-	<artifactId>bank-account-generator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>bank-account-generator</name>
+	<artifactId>producer</artifactId>
+	<version>0.0.1</version>
+	<name>producer</name>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<spring.version>2.2.5.RELEASE</spring.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<lombok.version>1.18.12</lombok.version>
-		<bank-account-model.version>0.0.1</bank-account-model.version>
-		<faker.version>1.0.1</faker.version>
+		<spring-kafka.version>2.4.3.RELEASE</spring-kafka.version>
+		<lombok.version>1.18.10</lombok.version>
+		<account-model.version>0.0.1</account-model.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>ru.company.kafka</groupId>
 			<artifactId>bank-account-model</artifactId>
-			<version>${bank-account-model.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>${faker.version}</version>
+			<version>${account-model.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -39,16 +34,9 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-			<scope>provided</scope>
-			<optional>true</optional>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>${spring-kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -61,6 +49,18 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka-test</artifactId>
+			<version>${spring-kafka.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

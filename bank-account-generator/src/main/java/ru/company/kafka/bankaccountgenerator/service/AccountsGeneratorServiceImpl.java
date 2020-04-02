@@ -1,33 +1,27 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
-import org.apache.commons.lang.RandomStringUtils;
+import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
-import ru.company.kafka.bankaccountgenerator.model.Account;
+import ru.company.kafka.model.rest.GeneratedAccount;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.time.ZoneId;
+import java.util.UUID;
 
 @Service
 public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
-    private static final int RANDOM_NAME_LENGTH = 10;
-    private static final int MIN_NAME_LENGTH = 3;
+    private final Faker faker;
 
-    public Account generateAccount() {
-        Random random = new Random();
-        return Account.builder()
+    public AccountsGeneratorServiceImpl(Faker faker) {
+        this.faker = faker;
+    }
+
+    public GeneratedAccount generateAccount() {
+        return GeneratedAccount.builder()
                 .uuid(UUID.randomUUID())
-                .firstName(RandomStringUtils.randomAlphabetic(MIN_NAME_LENGTH + random.nextInt(RANDOM_NAME_LENGTH)))
-                .lastName(RandomStringUtils.randomAlphabetic(MIN_NAME_LENGTH + random.nextInt(RANDOM_NAME_LENGTH)))
-                .balance((long)random.nextInt(10_000_000))
-                .birthday(generateRandomDate())
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
+                .balance(Double.parseDouble(faker.commerce().price().replace(",",".")))
+                .birthday(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .build();
-    }
-
-    private LocalDate generateRandomDate() {
-        return LocalDate.now().minusDays(randBetween());
-    }
-
-    private long randBetween() {
-        return (long) 7000 + Math.round(Math.random() * ((long) 30000 - (long) 7000));
     }
 }

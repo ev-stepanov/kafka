@@ -1,35 +1,29 @@
 package ru.company.kafka.bankaccountgenerator.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.company.kafka.bankaccountgenerator.model.Account;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.company.kafka.bankaccountgenerator.service.AccountService;
+import ru.company.kafka.model.rest.GeneratedAccount;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class AccountController {
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-    @GetMapping("/generate/accounts/{count}")
-    public ResponseEntity<List<Account>> getAccounts(@PathVariable Long count) {
-        return ResponseEntity.ok(accountService.getBankAccounts(count));
-    }
-
-    @GetMapping("/generate/accounts")
-    public ResponseEntity<List<Account>> getAccounts() {
-        return ResponseEntity.ok(accountService.getBankAccounts());
-    }
-
-    @PostMapping("/account")
-    public ResponseEntity<Boolean> generateAccounts() {
-        return ResponseEntity.ok(accountService.generateBankAccounts());
+    @GetMapping("/account")
+    public ResponseEntity<List<GeneratedAccount>> getAccounts() {
+        List<GeneratedAccount> bankAccounts = accountService.getBankAccounts();
+        log.info("Were generated accounts: " + bankAccounts);
+        return ResponseEntity.ok(bankAccounts);
     }
 }
