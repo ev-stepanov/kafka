@@ -14,5 +14,5 @@ spring:
     group-id: address-generator-consumer
 kafka:
   topic:
-    input: bank-accounts-topic
-    output: address-generator-topic
+    bank-accounts: bank-accounts-topic
+    address-generator: address-generator-topic

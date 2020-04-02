@@ -1,7 +1,6 @@
 package ru.company.kafka.producer.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -13,12 +12,11 @@ import ru.company.kafka.model.producer.BankAccountDto;
 @Service
 @Slf4j
 public class Producer {
+    private KafkaTemplate<String, BankAccountDto> kafkaTemplate;
+
     @Value("${spring.kafka.topic-name}")
     private String topicName;
 
-    private KafkaTemplate<String, BankAccountDto> kafkaTemplate;
-
-    @Autowired
     public Producer(KafkaTemplate<String, BankAccountDto> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }

@@ -31,7 +31,7 @@ public class RestAccountService {
     }
 
     @Scheduled(cron = "0/5 * * * * *")
-    public void fetchAccounts() {
+    private void fetchAccounts() {
         ResponseEntity<GeneratedAccount[]> response;
         try {
             response = restTemplate.getForEntity(API_ACCOUNTS, GeneratedAccount[].class);

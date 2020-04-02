@@ -29,11 +29,11 @@ import java.util.Map;
 public class KafkaStreamConfig {
     private final AddressGeneratorService addressGeneratorService;
 
-    @Value("${kafka.topic.input}")
-    private String inputTopic;
+    @Value("${kafka.topic.bank-accounts}")
+    private String bankAccountsTopic;
 
-    @Value("${kafka.topic.output}")
-    private String outputTopic;
+    @Value("${kafka.topic.address-generator}")
+    private String addressGeneratorTopic;
 
     public KafkaStreamConfig(AddressGeneratorService addressGeneratorService) {
         this.addressGeneratorService = addressGeneratorService;
@@ -54,7 +54,7 @@ public class KafkaStreamConfig {
         try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
              JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
             KStream<String, BankAccountDto> accountStream =
-                    streamsBuilder.stream(inputTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
+                    streamsBuilder.stream(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
 
             accountStream
                     .filter((id, account) -> account.getLastName().startsWith("A"))
@@ -62,7 +62,7 @@ public class KafkaStreamConfig {
                         log.info("For " + id + "was generated new address");
                         return addressGeneratorService.generateAddress(account.getUuid());
                     })
-                    .to(outputTopic, Produced.with(Serdes.String(), addressDtoJsonSerde));
+                    .to(addressGeneratorTopic, Produced.with(Serdes.String(), addressDtoJsonSerde));
         }
 
         return streamsBuilder.build();
