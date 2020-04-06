@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package ru.company.kafka.service;
+
+service BankAccountInfoService {
+    rpc getBankAccountsByAccountType (AccountTypeRequestProto) returns (BankAccountsProto);
+}
+
+message BankAccountsProto {
+    repeated BankAccountInfoProto bankAccountInfo = 1;
+}
+
+message AccountTypeRequestProto {
+    TypeAccountProto accountType = 1;
+}
+
+message BankAccountInfoProto {
+    string uuid = 1;
+    BankAccountProto bankAccount = 2;
+    AddressProto address = 3;
+}
+
+message BankAccountProto {
+    string firstName = 1;
+    string lastName = 2;
+    double balance = 3;
+    int64 birthday = 4;
+    TypeAccountProto type = 5;
+}
+
+message AddressProto {
+    string state = 1;
+    string city = 2;
+    string street = 3;
+}
+
+enum TypeAccountProto {
+    CREDIT = 0;
+    DEBIT = 1;
+}
