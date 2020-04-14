@@ -57,7 +57,7 @@ public class KafkaStreamConfig {
                     streamsBuilder.stream(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
 
             accountStream
-                    .filter((id, account) -> account.getLastName().startsWith("A"))
+//                    .filter((id, account) -> account.getLastName().startsWith("A"))
                     .mapValues((id, account) -> {
                         log.info("For " + id + "was generated new address");
                         return addressGeneratorService.generateAddress(account.getUuid());

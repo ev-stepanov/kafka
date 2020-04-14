@@ -2,4 +2,4 @@ server:
   port: 8085
 default:
   generate-accounts:
-    count: 50
+    count: 50000

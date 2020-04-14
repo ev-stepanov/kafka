@@ -26,4 +26,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     public List<BankAccountInfo> findAll() {
         return Lists.newArrayList(bankAccountRepository.findAll());
     }
+
+    @Override
+    public long count() {
+        return bankAccountRepository.count();
+    }
 }
