@@ -16,5 +16,7 @@
         <module>kafka-consumer</module>
         <module>bank-account-model</module>
         <module>user-cassandra-request</module>
+        <module>gRpc-client-service</module>
+        <module>gRpc-service</module>
     </modules>
 </project>
