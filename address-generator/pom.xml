@@ -14,7 +14,7 @@
 	<name>address-generator</name>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<spring.version>2.2.5.RELEASE</spring.version>
 		<spring-kafka.version>2.4.3.RELEASE</spring-kafka.version>
 		<lombok.version>1.18.10</lombok.version>

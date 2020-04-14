@@ -10,14 +10,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.company.kafka</groupId>
-            <artifactId>bank-account-model</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
+            <version>1.16.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -34,8 +29,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -4,12 +4,12 @@ server:
 spring:
   data:
     cassandra:
-      contact-points: 192.168.99.100
+      contact-points: localhost
       port: 9042
       keyspace-name: bank_space
   kafka:
     client-id: consumer-kafka
-    bootstrap-servers: 192.168.99.100:9092
+    bootstrap-servers: localhost:9092
     template:
       default-topic: bank-accounts-topic
     consumer:
