@@ -1,6 +1,7 @@
 package ru.company.kafka.service;
 
 import io.grpc.stub.StreamObserver;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -17,14 +18,10 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @GRpcService
+@RequiredArgsConstructor
 public class BankAccountService extends BankAccountInfoServiceGrpc.BankAccountInfoServiceImplBase {
     private final BankAccountRepository bankAccountRepository;
     private final CassandraTemplate cassandraTemplate;
-
-    public BankAccountService(BankAccountRepository bankAccountRepository, CassandraTemplate cassandraTemplate) {
-        this.bankAccountRepository = bankAccountRepository;
-        this.cassandraTemplate = cassandraTemplate;
-    }
 
     @Override
     public void getBankAccountsByAccountType(AccountTypeRequestProto request, StreamObserver<BankAccountsProto> responseObserver) {
@@ -36,8 +33,7 @@ public class BankAccountService extends BankAccountInfoServiceGrpc.BankAccountIn
                 (row, rowNum) -> FilterByTypeAccountDto.builder()
                         .uuid(row.getUUID("uuid"))
                         .typeAccount(TypeAccount.valueOf(row.getString("bank_account.typeAccount")))
-                        .build()
-        );
+                        .build());
 
         List<UUID> uuids = listUuidByTypeAccounts
                 .parallelStream()
