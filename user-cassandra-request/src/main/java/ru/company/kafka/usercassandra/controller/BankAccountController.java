@@ -20,15 +20,20 @@ public class BankAccountController {
         this.bankAccountService = bankAccountService;
     }
 
-    @GetMapping("/account/{uuid}")
+    @GetMapping("/accounts/{uuid}")
     public ResponseEntity<BankAccountInfo> getBankAccount(@PathVariable String uuid) {
         return bankAccountService.findById(uuid)
                 .map(bankAccountInfo -> new ResponseEntity<>(bankAccountInfo, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/account")
+    @GetMapping("/accounts")
     public List<BankAccountInfo> getBankAccounts() {
         return bankAccountService.findAll();
+    }
+
+    @GetMapping ("/accounts/size")
+    public Long getCountBankAccounts() {
+        return bankAccountService.count();
     }
 }

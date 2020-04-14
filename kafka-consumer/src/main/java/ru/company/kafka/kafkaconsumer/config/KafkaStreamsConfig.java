@@ -65,10 +65,12 @@ public class KafkaStreamsConfig {
             KTable<String, BankAccountInfo> bankAccountInfoKTable = accountStream.join(addressStream,
                     (bankAccount, addressDto) -> {
                         log.info("Data was joined by uuid " + bankAccount.getUuid());
-                        return Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
+                        BankAccountInfo bankAccountInfo = Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
+                        repository.save(bankAccountInfo);
+                        return bankAccountInfo;
                     });
 
-            bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
+//            bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
         }
         return streamsBuilder.build();
     }

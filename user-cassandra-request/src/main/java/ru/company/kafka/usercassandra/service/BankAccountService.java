@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface BankAccountService {
     Optional<BankAccountInfo> findById(String uuid);
     List<BankAccountInfo> findAll();
+    long count();
 }
