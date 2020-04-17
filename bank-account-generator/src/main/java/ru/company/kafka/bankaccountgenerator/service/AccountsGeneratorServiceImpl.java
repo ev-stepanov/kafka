@@ -1,6 +1,7 @@
 package ru.company.kafka.bankaccountgenerator.service;
 
 import com.github.javafaker.Faker;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.company.kafka.model.rest.GeneratedAccount;
 
@@ -8,12 +9,9 @@ import java.time.ZoneId;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AccountsGeneratorServiceImpl implements AccountsGeneratorService {
     private final Faker faker;
-
-    public AccountsGeneratorServiceImpl(Faker faker) {
-        this.faker = faker;
-    }
 
     public GeneratedAccount generateAccount() {
         return GeneratedAccount.builder()

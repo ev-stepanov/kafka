@@ -20,6 +20,7 @@
 		<lombok.version>1.18.12</lombok.version>
 		<bank-account-model.version>0.0.1</bank-account-model.version>
 		<faker.version>1.0.1</faker.version>
+		<mockito.versoin>3.3.3</mockito.versoin>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.versoin}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
