@@ -1,10 +1,7 @@
 package ru.company.kafka.kafkaconsumer.repository;
 
-import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.data.keyvalue.repository.KeyValueRepository;
 import ru.company.kafka.kafkaconsumer.model.BankAccountInfo;
 
-import java.util.UUID;
-
-public interface AccountRepository extends CassandraRepository<BankAccountInfo, UUID> {
-
+public interface AccountRepository extends KeyValueRepository<BankAccountInfo, String> {
 }

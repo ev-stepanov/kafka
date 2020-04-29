@@ -13,7 +13,7 @@ public class Converter {
 
     public static BankAccountInfo addressAndAccountToBankAccountInfo(BankAccountDto bankAccountDto, AddressDto addressDto) {
         return BankAccountInfo.builder()
-                .uuid(addressDto.getUuid())
+                .uuid(addressDto.getUuid().toString())
                 .bankAccount(BankAccount.builder()
                         .firstName(bankAccountDto.getFirstName())
                         .lastName(bankAccountDto.getLastName())

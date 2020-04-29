@@ -14,7 +14,7 @@ import ru.company.kafka.model.producer.BankAccountDto;
 @Slf4j
 @RequiredArgsConstructor
 public class Producer {
-    private KafkaTemplate<String, BankAccountDto> kafkaTemplate;
+    private final KafkaTemplate<String, BankAccountDto> kafkaTemplate;
 
     @Value("${spring.kafka.topic-name}")
     private String topicName;

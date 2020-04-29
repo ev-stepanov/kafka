@@ -1,5 +1,6 @@
 package ru.company.kafka.kafkaconsumer.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -16,7 +17,6 @@ import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerde;
-import ru.company.kafka.kafkaconsumer.model.BankAccountInfo;
 import ru.company.kafka.kafkaconsumer.repository.AccountRepository;
 import ru.company.kafka.kafkaconsumer.util.Converter;
 import ru.company.kafka.model.producer.AddressDto;
@@ -28,6 +28,7 @@ import java.util.Map;
 @Configuration
 @EnableKafkaStreams
 @Slf4j
+@RequiredArgsConstructor
 public class KafkaStreamsConfig {
     @Value("${kafka.topic.bank-accounts}")
     private String bankAccountsTopic;
@@ -36,10 +37,6 @@ public class KafkaStreamsConfig {
     private String addressGeneratorTopic;
 
     private final AccountRepository repository;
-
-    public KafkaStreamsConfig(AccountRepository repository) {
-        this.repository = repository;
-    }
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public KafkaStreamsConfiguration kStreamsConfigs(KafkaProperties kafkaProperties) {
@@ -62,15 +59,12 @@ public class KafkaStreamsConfig {
             KTable<String, AddressDto> addressStream =
                     streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde));
 
-            KTable<String, BankAccountInfo> bankAccountInfoKTable =
-                    accountStream.join(addressStream,
-                            (bankAccount, addressDto) -> {
-                                log.info("Data was joined by uuid " + bankAccount.getUuid());
-                                return Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
-                            });
-
-
-            bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
+            accountStream.join(
+                    addressStream,
+                    (bankAccount, addressDto) -> {
+                        log.info("Data was joined by uuid " + bankAccount.getUuid());
+                        return repository.save(Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto));
+                    });
         }
         return streamsBuilder.build();
     }

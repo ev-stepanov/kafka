@@ -20,7 +20,7 @@ import java.util.Random;
 @Service
 @Slf4j
 public class RestAccountService {
-    private static final String API_ACCOUNTS = "http://localhost:8085/api/account";
+    private static final String API_ACCOUNTS = "http://localhost:8085/api/accounts";
 
     private final RestTemplate restTemplate;
     private final Producer producer;

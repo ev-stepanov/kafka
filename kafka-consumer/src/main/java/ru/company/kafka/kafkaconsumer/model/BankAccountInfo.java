@@ -4,27 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.Indexed;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table("bank_account_info")
-public class BankAccountInfo {
-    @PrimaryKey
-    private UUID uuid;
-
-    @Indexed
-    @Column("bank_account")
+@RedisHash("bank-account-info")
+public class BankAccountInfo implements Serializable {
+    @Id
+    private String uuid;
     private BankAccount bankAccount;
-
-    @Column("address")
     private Address address;
-
 }
