@@ -1,5 +1,6 @@
 package ru.company.kafka.producer.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -11,21 +12,22 @@ import ru.company.kafka.model.producer.BankAccountDto;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class Producer {
     private KafkaTemplate<String, BankAccountDto> kafkaTemplate;
 
     @Value("${spring.kafka.topic-name}")
     private String topicName;
 
-    public Producer(KafkaTemplate<String, BankAccountDto> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
-
     void sendMessage(BankAccountDto bankAccountDto) {
         ListenableFuture<SendResult<String, BankAccountDto>> future =
-                kafkaTemplate.send(topicName, bankAccountDto.getUuid().toString(), bankAccountDto);
+                kafkaTemplate.send(
+                        topicName,
+                        bankAccountDto.getUuid().toString(),
+                        bankAccountDto
+                );
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, BankAccountDto>>() {
+        future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, BankAccountDto> result) {
                 log.info("Topic: " + result.getRecordMetadata().topic() +
