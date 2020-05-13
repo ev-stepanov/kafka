@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BankAccountInfo {
-    private UUID uuid;
+    private String uuid;
 
     private BankAccount bankAccount;
 

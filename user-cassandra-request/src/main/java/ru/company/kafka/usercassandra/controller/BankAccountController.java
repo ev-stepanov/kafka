@@ -1,24 +1,22 @@
 package ru.company.kafka.usercassandra.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.company.kafka.usercassandra.model.BankAccountInfo;
+import ru.company.kafka.bankaccountredismodel.BankAccountInfo;
 import ru.company.kafka.usercassandra.service.BankAccountService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class BankAccountController {
-    private BankAccountService bankAccountService;
-
-    public BankAccountController(BankAccountService bankAccountService) {
-        this.bankAccountService = bankAccountService;
-    }
+    private final BankAccountService bankAccountService;
 
     @GetMapping("/accounts/{uuid}")
     public ResponseEntity<BankAccountInfo> getBankAccount(@PathVariable String uuid) {

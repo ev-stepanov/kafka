@@ -59,11 +59,11 @@ public class KafkaStreamsConfig {
             KTable<String, AddressDto> addressStream =
                     streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde));
 
-            accountStream.join(
-                    addressStream,
-                    (bankAccount, addressDto) -> {
+            addressStream.join(
+                    accountStream,
+                    (address, bankAccount) -> {
                         log.info("Data was joined by uuid " + bankAccount.getUuid());
-                        return repository.save(Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto));
+                        return repository.save(Converter.addressAndAccountToBankAccountInfo(bankAccount, address));
                     });
         }
         return streamsBuilder.build();

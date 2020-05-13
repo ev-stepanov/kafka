@@ -28,6 +28,11 @@
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
+			<groupId>ru.company.kafka</groupId>
+			<artifactId>bank-account-redis-model</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 		</dependency>

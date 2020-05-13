@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.cassandra.core.mapping.UserDefinedType;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalDate;
 
 @Data
 @Builder
-@UserDefinedType("bank_account")
+@RedisHash("bank-account")
 class BankAccount {
     private String firstName;
     private String lastName;

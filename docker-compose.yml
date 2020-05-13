@@ -16,17 +16,6 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  cassandra:
-    image: 'cassandra'
-    ports:
-      - '7000:7000'
-      - '9042:9042'
-    volumes:
-      - 'cassandra_data:/bitnami'
-    environment:
-      - CASSANDRA_SEEDS=cassandra
-      - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_PASSWORD=cassandra
   redis:
     image: 'bitnami/redis:latest'
     environment:
@@ -47,6 +36,4 @@ services:
     - "7081:8081"
 volumes:
   redis_data:
-    driver: local
-  cassandra_data:
     driver: local

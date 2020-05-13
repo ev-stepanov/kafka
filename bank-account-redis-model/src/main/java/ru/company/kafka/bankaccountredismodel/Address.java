@@ -1,4 +1,4 @@
-package ru.company.kafka.kafkaconsumer.model;
+package ru.company.kafka.bankaccountredismodel;
 
 import lombok.Builder;
 import lombok.Data;

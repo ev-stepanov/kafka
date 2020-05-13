@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-rsocket'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-cassandra-reactive'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
