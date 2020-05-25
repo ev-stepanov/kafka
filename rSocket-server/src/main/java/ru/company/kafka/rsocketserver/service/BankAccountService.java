@@ -6,5 +6,6 @@ import ru.company.kafka.rsocketserver.model.BankAccountInfo;
 
 public interface BankAccountService {
     Flux<BankAccountInfo> findAll();
+    Mono<BankAccountInfo> findByUuid(String uuid);
     Mono<Long> count();
 }

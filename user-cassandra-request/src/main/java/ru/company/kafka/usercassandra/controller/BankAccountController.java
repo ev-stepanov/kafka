@@ -30,7 +30,7 @@ public class BankAccountController {
         return bankAccountService.findAll();
     }
 
-    @GetMapping ("/accounts/size")
+    @GetMapping ("/accounts/count")
     public Long getCountBankAccounts() {
         return bankAccountService.count();
     }
