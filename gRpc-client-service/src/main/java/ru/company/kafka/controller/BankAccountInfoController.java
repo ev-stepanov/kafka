@@ -1,5 +1,6 @@
 package ru.company.kafka.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,15 +14,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class BankAccountInfoController {
     private final GrpcBankAccountInfoService grpcBankAccountInfoService;
 
-    public BankAccountInfoController(GrpcBankAccountInfoService grpcBankAccountInfoService) {
-        this.grpcBankAccountInfoService = grpcBankAccountInfoService;
+    @GetMapping("/account/{type}")
+    public ResponseEntity<List<BankAccountInfo>> getBankAccountsByTypeAccount(@PathVariable TypeAccount type) {
+        return ResponseEntity.ok(grpcBankAccountInfoService.getBankAccountsByAccountType(type));
     }
 
-    @GetMapping("/accounts/{type}")
-    public ResponseEntity<List<BankAccountInfo>> getBankAccountsByTypeAccount(@PathVariable TypeAccount type) {
-        return ResponseEntity.ok().body(grpcBankAccountInfoService.getBankAccountsByAccountType(type));
+    @GetMapping("/account")
+    public ResponseEntity<List<BankAccountInfo>> getAllBankAccounts() {
+        return ResponseEntity.ok(grpcBankAccountInfoService.getAllBankAccounts());
     }
 }

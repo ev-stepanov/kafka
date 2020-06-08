@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface GrpcBankAccountInfoService {
     List<BankAccountInfo> getBankAccountsByAccountType(TypeAccount typeAccount);
+    List<BankAccountInfo> getAllBankAccounts();
 }

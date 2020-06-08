@@ -14,6 +14,7 @@
 	<name>gRpc-service</name>
 
 	<properties>
+		<bank-account-model.version>0.0.1</bank-account-model.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
@@ -27,7 +28,7 @@
 		<dependency>
 			<groupId>ru.company.kafka</groupId>
 			<artifactId>bank-account-model</artifactId>
-			<version>0.0.1</version>
+			<version>${bank-account-model.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.lognet</groupId>
@@ -47,7 +48,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -75,10 +75,6 @@
 			</extension>
 		</extensions>
 		<plugins>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--			</plugin>-->
 			<plugin>
 				<groupId>org.xolstice.maven.plugins</groupId>
 				<artifactId>protobuf-maven-plugin</artifactId>
@@ -99,5 +95,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

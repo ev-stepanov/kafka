@@ -1,5 +1,6 @@
 package ru.company.kafka.service;
 
+import com.google.protobuf.Timestamp;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,10 @@ import ru.company.kafka.model.BankAccountInfo;
 import ru.company.kafka.model.enums.TypeAccount;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,6 +56,18 @@ public class GrpcBankAccountInfoServiceImpl implements GrpcBankAccountInfoServic
         return mapBankAccountProtoToBankAccount(bankAccountsByAccountType);
     }
 
+    @Override
+    public List<BankAccountInfo> getAllBankAccounts() {
+        log.info("'getAllBankAccounts' method  was started without parameters");
+
+        Empty empty = Empty.newBuilder().build();
+        BankAccountsProto allBankAccounts = bankAccountInfoServiceBlockingStub.getAllBankAccounts(empty);
+
+        log.info("client received data {} from 'getAllBankAccounts' method", allBankAccounts);
+
+        return mapBankAccountProtoToBankAccount(allBankAccounts);
+    }
+
     private List<BankAccountInfo> mapBankAccountProtoToBankAccount(BankAccountsProto bankAccountsProto) {
         return bankAccountsProto.getBankAccountInfoList()
                 .parallelStream()
@@ -66,10 +82,15 @@ public class GrpcBankAccountInfoServiceImpl implements GrpcBankAccountInfoServic
                                 .lastName(bankAccountInfoProto.getBankAccount().getLastName())
                                 .balance(bankAccountInfoProto.getBankAccount().getBalance())
                                 .typeAccount(TypeAccount.valueOf(bankAccountInfoProto.getBankAccount().getType().name()))
-                                .birthday(LocalDate.ofEpochDay(bankAccountInfoProto.getBankAccount().getBirthday()))
+                                .birthday(fromTimestampToLocalDate(bankAccountInfoProto.getBankAccount().getBirthday()))
                                 .build())
                         .uuid(UUID.fromString(bankAccountInfoProto.getUuid()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private static LocalDate fromTimestampToLocalDate(Timestamp timestamp) {
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos()), ZoneId.of("UTC"))
+                .toLocalDate();
     }
 }

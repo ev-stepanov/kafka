@@ -1,14 +1,20 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
 option java_multiple_files = true;
 package ru.company.kafka.service;
 
 service BankAccountInfoService {
     rpc getBankAccountsByAccountType (AccountTypeRequestProto) returns (BankAccountsProto);
+    rpc getAllBankAccounts (Empty) returns (BankAccountsProto);
 }
 
 message BankAccountsProto {
     repeated BankAccountInfoProto bankAccountInfo = 1;
+}
+
+message Empty {
+
 }
 
 message AccountTypeRequestProto {
@@ -25,7 +31,7 @@ message BankAccountProto {
     string firstName = 1;
     string lastName = 2;
     double balance = 3;
-    int64 birthday = 4;
+    google.protobuf.Timestamp birthday = 4;
     TypeAccountProto type = 5;
 }
 

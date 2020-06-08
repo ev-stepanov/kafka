@@ -1,5 +1,6 @@
 package ru.company.kafka.service;
 
+import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,9 @@ import ru.company.kafka.model.BankAccountInfo;
 import ru.company.kafka.model.enums.TypeAccount;
 import ru.company.kafka.repository.BankAccountRepository;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,6 +26,18 @@ import java.util.stream.Collectors;
 public class BankAccountService extends BankAccountInfoServiceGrpc.BankAccountInfoServiceImplBase {
     private final BankAccountRepository bankAccountRepository;
     private final CassandraTemplate cassandraTemplate;
+
+    @Override
+    public void getAllBankAccounts(Empty request, StreamObserver<BankAccountsProto> responseObserver) {
+        log.info("Server received {}", request);
+
+        List<BankAccountInfo> bankAccounts = bankAccountRepository.findAll();
+        BankAccountsProto bankAccountsProto = mapBankAccountsToProto(bankAccounts);
+
+        responseObserver.onNext(bankAccountsProto);
+        responseObserver.onCompleted();
+        log.info("Server responsed {}", bankAccountsProto);
+    }
 
     @Override
     public void getBankAccountsByAccountType(AccountTypeRequestProto request, StreamObserver<BankAccountsProto> responseObserver) {
@@ -60,7 +76,7 @@ public class BankAccountService extends BankAccountInfoServiceGrpc.BankAccountIn
             BankAccountProto bankAccount = BankAccountProto.newBuilder()
                     .setFirstName(account.getBankAccount().getFirstName())
                     .setLastName(account.getBankAccount().getLastName())
-                    .setBirthday(account.getBankAccount().getBirthday().toEpochDay())
+                    .setBirthday(fromLocalDateToTimestamp(account.getBankAccount().getBirthday()))
                     .setBalance(account.getBankAccount().getBalance())
                     .setType(TypeAccountProto.valueOf(account.getBankAccount().getTypeAccount().name()))
                     .build();
@@ -72,5 +88,13 @@ public class BankAccountService extends BankAccountInfoServiceGrpc.BankAccountIn
             builder.addBankAccountInfo(bankAccountInfo);
         }
         return builder.build();
+    }
+
+    private static Timestamp fromLocalDateToTimestamp(LocalDate localDate) {
+        Instant instant = localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        return Timestamp.newBuilder()
+                .setSeconds(instant.getEpochSecond())
+                .setNanos(instant.getNano())
+                .build();
     }
 }
