@@ -18,7 +18,7 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
 
-    @GetMapping("/accounts")
+    @GetMapping("/account")
     public ResponseEntity<List<GeneratedAccount>> getAccounts() {
         List<GeneratedAccount> bankAccounts = accountService.getBankAccounts();
         log.info("Were generated accounts: " + bankAccounts);
