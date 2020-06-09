@@ -1,5 +1,6 @@
 package ru.company.kafka.addressgenerator.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -23,9 +24,10 @@ import ru.company.kafka.model.producer.BankAccountDto;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Configuration
 @EnableKafkaStreams
-@Slf4j
+@RequiredArgsConstructor
 public class KafkaStreamConfig {
     private final AddressGeneratorService addressGeneratorService;
 
@@ -34,10 +36,6 @@ public class KafkaStreamConfig {
 
     @Value("${kafka.topic.address-generator}")
     private String addressGeneratorTopic;
-
-    public KafkaStreamConfig(AddressGeneratorService addressGeneratorService) {
-        this.addressGeneratorService = addressGeneratorService;
-    }
 
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     public KafkaStreamsConfiguration kStreamsConfigs(KafkaProperties kafkaProperties) {
@@ -57,7 +55,7 @@ public class KafkaStreamConfig {
                     streamsBuilder.stream(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
 
             accountStream
-//                    .filter((id, account) -> account.getLastName().startsWith("A"))
+                    .filter((id, account) -> account.getLastName().startsWith("A"))
                     .mapValues((id, account) -> {
                         log.info("For " + id + "was generated new address");
                         return addressGeneratorService.generateAddress(account.getUuid());
