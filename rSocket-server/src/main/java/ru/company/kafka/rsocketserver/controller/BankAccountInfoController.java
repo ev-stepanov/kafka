@@ -13,12 +13,12 @@ import ru.company.kafka.rsocketserver.service.BankAccountService;
 public class BankAccountInfoController {
     private final BankAccountService bankAccountService;
 
-    @MessageMapping("accounts")
+    @MessageMapping("account")
     public Flux<BankAccountInfo> getAllBankAccounts() {
         return bankAccountService.findAll();
     }
 
-    @MessageMapping("accounts-count")
+    @MessageMapping("account-count")
     public Mono<Long> getCountBankAccounts(){
         return bankAccountService.count();
     }
