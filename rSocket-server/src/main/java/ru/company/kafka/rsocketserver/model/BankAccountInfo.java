@@ -24,5 +24,4 @@ public class BankAccountInfo {
 
     @Column("address")
     private Address address;
-
 }

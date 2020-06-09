@@ -15,18 +15,18 @@ public class BankAccountController {
 
     private final RSocketRequester requester;
 
-    @GetMapping(value = "/accounts", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/account", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Publisher<BankAccountInfo> getAccounts() {
         return requester
-                .route("accounts")
+                .route("account")
                 .data(Payload.class)
                 .retrieveFlux(BankAccountInfo.class);
     }
 
-    @GetMapping(value = "/accounts/count", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/account/count", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Publisher<Long> getCountAccounts() {
         return requester
-                .route("accounts-count")
+                .route("account-count")
                 .data(Payload.class)
                 .retrieveFlux(Long.class);
     }

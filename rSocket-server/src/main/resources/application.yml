@@ -9,4 +9,3 @@ spring:
       port: 9042
       keyspace-name: bank_space
       contact-points: localhost
-      schema-action: none

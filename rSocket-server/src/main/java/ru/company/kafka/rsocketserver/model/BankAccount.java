@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @UserDefinedType("bank_account")
-class BankAccount {
+public class BankAccount {
     private String firstName;
     private String lastName;
     private Double balance;

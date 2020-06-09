@@ -7,7 +7,7 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 @Data
 @Builder
 @UserDefinedType("address")
-class Address {
+public class Address {
     private String city;
     private String street;
     private String state;
