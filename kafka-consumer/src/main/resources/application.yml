@@ -10,13 +10,13 @@ spring:
   kafka:
     client-id: consumer-kafka
     bootstrap-servers: localhost:9092
+    group-id: bank-account-and-address-consumer
     template:
       default-topic: bank-accounts-topic
     consumer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
-    group-id: bank-account-and-address-consumer
 kafka:
   topic:
     bank-accounts: bank-accounts-topic
