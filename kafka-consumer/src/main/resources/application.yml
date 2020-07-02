@@ -9,13 +9,9 @@ spring:
       keyspace-name: bank_space
   kafka:
     client-id: consumer-kafka
-    bootstrap-servers: localhost:9092
     group-id: bank-account-and-address-consumer
-    template:
-      default-topic: bank-accounts-topic
+    bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
     consumer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
 kafka:
   topic:

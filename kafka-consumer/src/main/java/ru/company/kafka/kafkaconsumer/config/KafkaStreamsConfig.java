@@ -48,6 +48,7 @@ public class KafkaStreamsConfig {
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, kafkaProperties.getClientId());
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, JsonSerde.class);
+        config.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "false");
         return new KafkaStreamsConfiguration(config);
     }
@@ -62,15 +63,28 @@ public class KafkaStreamsConfig {
             KTable<String, AddressDto> addressStream =
                     streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde));
 
+            Map<String, BankAccountInfo> duplicatesMap = new HashMap();
             KTable<String, BankAccountInfo> bankAccountInfoKTable =
                     accountStream.join(addressStream,
                             (bankAccount, addressDto) -> {
                                 log.info("Data was joined by uuid " + bankAccount.getUuid());
                                 return Converter.addressAndAccountToBankAccountInfo(bankAccount, addressDto);
-                            });
+                            })
+                    .filter((key, value) -> {
+                        if (duplicatesMap.containsKey(key)) {
+                            log.error("Duplicate's dedicated by key {}", key);
+                            return false;
+                        } else {
+                            duplicatesMap.put(key, value);
+                            return true;
+                        }
+                    });
 
 
-            bankAccountInfoKTable.toStream().foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
+            bankAccountInfoKTable.toStream()
+                    .filter((key, value) -> value != null)
+                    .peek((key, value ) ->  log.info("Saving id: {}", key ))
+                    .foreach((id, bankAccountInfo) -> repository.save(bankAccountInfo));
         }
         return streamsBuilder.build();
     }

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -20,7 +19,6 @@ public class BankAccountInfo {
     @PrimaryKey
     private UUID uuid;
 
-    @Indexed
     @Column("bank_account")
     private BankAccount bankAccount;
 

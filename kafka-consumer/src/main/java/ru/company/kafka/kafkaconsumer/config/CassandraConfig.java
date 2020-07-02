@@ -3,6 +3,7 @@ package ru.company.kafka.kafkaconsumer.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
+import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
@@ -46,9 +47,18 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Override
     protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
         CreateKeyspaceSpecification specification = CreateKeyspaceSpecification
-                .createKeyspace(keyspace).ifNotExists()
-                .with(KeyspaceOption.DURABLE_WRITES, true).withSimpleReplication();
+                .createKeyspace(keyspace)
+                .ifNotExists()
+                .with(KeyspaceOption.DURABLE_WRITES, true)
+                .withSimpleReplication();
         return Collections.singletonList(specification);
+    }
+
+    @Override
+    public CassandraClusterFactoryBean cluster() {
+        CassandraClusterFactoryBean cluster = super.cluster();
+        cluster.setJmxReportingEnabled(false);
+        return cluster;
     }
 
     @Override
