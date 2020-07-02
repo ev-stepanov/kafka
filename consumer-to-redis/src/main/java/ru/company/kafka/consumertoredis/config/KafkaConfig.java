@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -51,20 +52,25 @@ public class KafkaConfig {
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, kafkaProperties.getClientId());
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, JsonSerde.class);
+        config.put(StreamsConfig.NUM_STANDBY_REPLICAS_CONFIG, 3);
+        config.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, 3);
         return new KafkaStreamsConfiguration(config);
     }
 
     @Bean
-    public KStream<String, BankAccountInfo> kStream(StreamsBuilder streamsBuilder) {
-        KTable<String, BankAccount> bankAccountKTable = streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), new JsonSerde<>(BankAccount.class).ignoreTypeHeaders()));
-        KTable<String, Address> addressKTable = streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), new JsonSerde<>(Address.class).ignoreTypeHeaders()));
-        KStream<String, BankAccountInfo> bankAccountInfoKStream = bankAccountKTable.join(addressKTable, valueJoiner()).toStream();
-        bankAccountInfoKStream.foreach((key, value) -> redisTemplate.opsForValue()
-                .set("bank-account-info:" + key, value)
-                .subscribe(doNothing -> {
-                })
-        );
+    public Topology kStream(StreamsBuilder streamsBuilder) {
+        try (final JsonSerde<BankAccount> bankAccountJsonSerde = new JsonSerde<>(BankAccount.class).ignoreTypeHeaders();
+             final JsonSerde<Address> addressJsonSerde = new JsonSerde<>(Address.class).ignoreTypeHeaders()) {
+            KTable<String, BankAccount> bankAccountKTable = streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountJsonSerde));
+            KTable<String, Address> addressKTable = streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressJsonSerde));
+            KStream<String, BankAccountInfo> bankAccountInfoKStream = bankAccountKTable.join(addressKTable, valueJoiner()).toStream();
+            bankAccountInfoKStream.foreach((key, value) -> redisTemplate.opsForValue()
+                    .set(BankAccountInfo.BANK_ACCOUNT_NAME_KEY + key, value)
+                    .log()
+                    .subscribe()
+            );
+        }
 
-        return bankAccountInfoKStream;
+        return streamsBuilder.build();
     }
 }

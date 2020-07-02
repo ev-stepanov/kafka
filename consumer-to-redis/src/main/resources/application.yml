@@ -4,9 +4,9 @@ server:
 spring:
   kafka:
     client-id: kafka-consumer-to-redis
-    bootstrap-servers: localhost:9092
+    group-id: consumer-redis-group
+    bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
     consumer:
-      group-id: consumer-1
       auto-offset-reset: earliest
 kafka:
   topic:
