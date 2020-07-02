@@ -4,14 +4,10 @@ server:
 spring:
   kafka:
     client-id: address-generator
-    bootstrap-servers: localhost:9092
-    template:
-      default-topic: bank-accounts-topic
+    group-id: address-generator-consumer-group
+    bootstrap-servers: localhost:9091, localhost:9092, localhost:9093
     consumer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
-    group-id: address-generator-consumer
 kafka:
   topic:
     bank-accounts: bank-accounts-topic

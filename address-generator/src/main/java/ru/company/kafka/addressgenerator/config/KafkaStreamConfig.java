@@ -2,6 +2,7 @@ package ru.company.kafka.addressgenerator.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.support.serializer.JsonSerde;
 import ru.company.kafka.addressgenerator.service.AddressGeneratorService;
 import ru.company.kafka.model.producer.AddressDto;
@@ -48,6 +50,14 @@ public class KafkaStreamConfig {
     }
 
     @Bean
+    public NewTopic addressGeneratorTopic() {
+        return TopicBuilder.name(addressGeneratorTopic)
+                .partitions(5)
+                .replicas(3)
+                .build();
+    }
+
+    @Bean
     public Topology createTopology(StreamsBuilder streamsBuilder) {
         try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class);
              JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class)) {
@@ -57,7 +67,7 @@ public class KafkaStreamConfig {
             accountStream
                     .filter((id, account) -> account.getLastName().startsWith("A"))
                     .mapValues((id, account) -> {
-                        log.info("For " + id + "was generated new address");
+                        log.info("For " + id + " was generated new address");
                         return addressGeneratorService.generateAddress(account.getUuid());
                     })
                     .to(addressGeneratorTopic, Produced.with(Serdes.String(), addressDtoJsonSerde));
