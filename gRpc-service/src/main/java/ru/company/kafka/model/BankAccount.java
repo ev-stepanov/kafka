@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
-import ru.company.kafka.model.enums.TypeAccount;
 
 import java.time.LocalDate;
 

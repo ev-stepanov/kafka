@@ -9,7 +9,7 @@ import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.stereotype.Component;
 import ru.company.kafka.dto.FilterByTypeAccountDto;
 import ru.company.kafka.model.BankAccountInfo;
-import ru.company.kafka.model.enums.TypeAccount;
+import ru.company.kafka.model.TypeAccount;
 import ru.company.kafka.repository.BankAccountRepository;
 
 import java.time.Instant;

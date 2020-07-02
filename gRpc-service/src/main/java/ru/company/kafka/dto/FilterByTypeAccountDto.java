@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.company.kafka.model.enums.TypeAccount;
+import ru.company.kafka.model.TypeAccount;
 
 import java.util.UUID;
 
