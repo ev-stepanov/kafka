@@ -1,0 +1,26 @@
+server:
+  port:
+    9082
+
+spring:
+  kafka:
+    client-id: kafka-oracle-consumer
+    group-id: consumer-oracle-group
+    bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
+    consumer:
+      auto-offset-reset: earliest
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: system
+    password: oracle
+    driver-class: oracle.jdbc.OracleDriver
+  jpa:
+    hibernate:
+      dialect: Oracle10gDialect
+      ddl-auto: create-drop
+      generate-ddl: true
+
+kafka:
+  topic:
+    bank-accounts: bank-accounts-topic
+    address-generator: address-generator-topic
