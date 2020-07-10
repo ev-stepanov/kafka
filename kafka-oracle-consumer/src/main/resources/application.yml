@@ -17,7 +17,7 @@ spring:
   jpa:
     hibernate:
       dialect: Oracle10gDialect
-      ddl-auto: create-drop
+      ddl-auto: create
       generate-ddl: true
 
 kafka:

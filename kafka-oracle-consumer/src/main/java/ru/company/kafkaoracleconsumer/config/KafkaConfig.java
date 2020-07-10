@@ -8,7 +8,6 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.KTable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -55,14 +54,10 @@ public class KafkaConfig {
     @Bean
     public Topology kafkaBankAccountStreams(StreamsBuilder streamsBuilder) {
         try (JsonSerde<BankAccountDto> bankAccountDtoJsonSerde = new JsonSerde<>(BankAccountDto.class).ignoreTypeHeaders()) {
-            KTable<String, BankAccountDto> bankAccountKTable = streamsBuilder.table(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde));
-            bankAccountKTable.toStream()
+            streamsBuilder.stream(bankAccountsTopic, Consumed.with(Serdes.String(), bankAccountDtoJsonSerde))
                     .peek((key, value) -> log.info("Key: {} Value: {}", key, value))
                     .map((key, value) -> new KeyValue<>(key, ConverterDto.convertToBankAccountFrom(value)))
-                    .foreach((key, value) -> {
-                        value.setUuid(UUID.fromString(key));
-                        bankAccountRepository.save(value);
-                    });
+                    .foreach((key, value) -> bankAccountRepository.save(value));
         }
         return streamsBuilder.build();
     }
@@ -70,8 +65,7 @@ public class KafkaConfig {
     @Bean
     public Topology kafkaAddressGeneratorStreams(StreamsBuilder streamsBuilder) {
         try (JsonSerde<AddressDto> addressDtoJsonSerde = new JsonSerde<>(AddressDto.class).ignoreTypeHeaders()) {
-            KTable<String, AddressDto> bankAccountKTable = streamsBuilder.table(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde));
-            bankAccountKTable.toStream()
+            streamsBuilder.stream(addressGeneratorTopic, Consumed.with(Serdes.String(), addressDtoJsonSerde))
                     .peek((key, value) -> log.info("Key: {} Value: {}", key, value))
                     .map((key, value) -> new KeyValue<>(key, ConverterDto.convertToAddressFrom(value)))
                     .foreach((key, value) -> {
