@@ -15,11 +15,8 @@ spring:
     password: oracle
     driver-class: oracle.jdbc.OracleDriver
   jpa:
-    hibernate:
-      dialect: Oracle10gDialect
-      ddl-auto: create
-      generate-ddl: true
-
+    show-sql: true
+    generate-ddl: true
 kafka:
   topic:
     bank-accounts: bank-accounts-topic
