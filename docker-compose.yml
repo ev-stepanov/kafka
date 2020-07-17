@@ -21,7 +21,6 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zoo:2181"
       KAFKA_BROKER_ID: 1
-#      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
     depends_on:
       - zoo
   kafka2:
@@ -35,7 +34,6 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zoo:2181"
       KAFKA_BROKER_ID: 2
-#      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
     depends_on:
       - zoo
   kafka3:
@@ -49,7 +47,6 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zoo:2181"
       KAFKA_BROKER_ID: 3
-#      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
     depends_on:
       - zoo
   manager:
@@ -60,6 +57,30 @@ services:
       - ZK_HOSTS=zoo:2181
     depends_on:
       - zoo
+  oracle-db:
+    image: oracleinanutshell/oracle-xe-11g:latest
+    ports:
+      - 1521:1521
+      - 5500:5500
+  tarantool_1:
+    image: tarantool/tarantool:latest
+    environment:
+      TARANTOOL_REPLICATION: "tarantool_1,tarantool_2"
+    networks:
+      - net
+    command: tarantool /usr/local/share/tarantool/init.lua
+    ports:
+      - "3300:3301"
+    volumes:
+      - ./scripts/lua:/usr/local/share/tarantool
+  tarantool_2:
+    image: tarantool/tarantool:latest
+    environment:
+      TARANTOOL_REPLICATION: "tarantool_1,tarantool_2"
+    networks:
+      - net
+    ports:
+      - "3301:3301"
   cassandra:
     image: 'cassandra'
     ports:
@@ -94,3 +115,6 @@ volumes:
     driver: local
   cassandra_data:
     driver: local
+networks:
+  net:
+    driver: bridge
