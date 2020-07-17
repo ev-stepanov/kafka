@@ -1,0 +1,26 @@
+server:
+  port:
+    9083
+
+spring:
+  datasource:
+    initialization-mode: always
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: system
+    password: oracle
+    driver-class: oracle.jdbc.OracleDriver
+  jpa:
+    show-sql: true
+    generate-ddl: false
+
+tarantool:
+  db:
+    cluster:
+      user: guest
+      password:
+      master:
+        address: 127.0.0.1
+        port: 3301
+      slave:
+        address: 127.0.0.1
+        port: 3300
