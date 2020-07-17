@@ -1,0 +1,14 @@
+server:
+  port: 9084
+
+tarantool:
+  db:
+    cluster:
+      user: guest
+      password:
+      master:
+        address: 127.0.0.1
+        port: 3301
+      slave:
+        address: 127.0.0.1
+        port: 3300
