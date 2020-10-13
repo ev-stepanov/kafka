@@ -21,7 +21,7 @@
 		<bank-account-model.version>0.0.1</bank-account-model.version>
 		<faker.version>1.0.1</faker.version>
 		<mockito.versoin>3.3.3</mockito.versoin>
-		<junit.version>4.13</junit.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
