@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring.version>2.2.5.RELEASE</spring.version>
+		<spring.version>2.5.12</spring.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<lombok.version>1.18.12</lombok.version>
 		<bank-account-model.version>0.0.1</bank-account-model.version>
