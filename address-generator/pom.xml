@@ -19,7 +19,7 @@
 		<spring-kafka.version>2.4.3.RELEASE</spring-kafka.version>
 		<lombok.version>1.18.10</lombok.version>
 		<account-model.version>0.0.1</account-model.version>
-		<web.version>5.2.5.RELEASE</web.version>
+		<web.version>6.0.0</web.version>
 		<javafaker.version>1.0.1</javafaker.version>
 	</properties>
 
